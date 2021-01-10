@@ -10,7 +10,7 @@ data class StudentWithSubjects(
     @Embedded val student: Student,
     @Relation(
         parentColumn = "idStudent",
-        entityColumn = "idStudent",
+        entityColumn = "idSubject",
         associateBy = Junction(
             StudentSubjectCrossRef::class
         )
