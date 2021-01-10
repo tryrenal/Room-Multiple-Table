@@ -4,8 +4,8 @@ import androidx.room.*
 import com.renaldysabdo.roommultipletable.entities.Director
 import com.renaldysabdo.roommultipletable.entities.School
 import com.renaldysabdo.roommultipletable.entities.Student
-import com.renaldysabdo.roommultipletable.entities.relations.SchoolAndDirector
-import com.renaldysabdo.roommultipletable.entities.relations.SchoolWithStudents
+import com.renaldysabdo.roommultipletable.entities.Subject
+import com.renaldysabdo.roommultipletable.entities.relations.*
 
 @Dao
 interface SchoolDao {
@@ -27,4 +27,19 @@ interface SchoolDao {
     @Transaction
     @Query("SELECT * FROM school WHERE nameSchool = :schoolName")
     suspend fun getSchoolWithStudens(schoolName: String) : List<SchoolWithStudents>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSubject(subject: Subject)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertStudentSubjectCrossRef(crossRef: StudentSubjectCrossRef)
+
+    @Transaction
+    @Query("SELECT * FROM subject WHERE nameSubject = :subjectName")
+    suspend fun getStudentsOfSubject(subjectName: String) : List<SubjectWithStudents>
+
+    @Transaction
+    @Query("SELECT * FROM student WHERE nameStudent = :studentName")
+    suspend fun getSubjectsofStudent(studentName: String) : List<StudentWithSubjects>
+
 }
